@@ -4,10 +4,22 @@ const randomIndex = (maxValue) => {
   return Math.floor(Math.random() * maxValue)
 }
 
+const Header = ({text}) => <h1>{text}</h1>
+
 const voteForAnecdote = (votes, selectedAnecdote) => {
   let newVotes = [...votes]
   newVotes[selectedAnecdote] += 1
   return newVotes
+}
+
+const getIndexOfMostVotes = (votes) => {
+  let maxIndex = 0
+  for (let i = 1 ; i < votes.length ; i++) {
+    if (votes[i] > votes[maxIndex]) {
+      maxIndex = i
+    }
+  }
+  return maxIndex
 }
 
 const App = () => {
@@ -25,17 +37,23 @@ const App = () => {
    
   const [selected, setSelected] = useState(randomIndex(anecdotes.length))
   const [votes, setVotes] = useState(initialVotes)
+  const mostVotesIndex = getIndexOfMostVotes(votes)
   console.log(selected)
   console.log(votes)
 
   return (
     <div>
+      <Header text="Anecdote of the day" />
       {anecdotes[selected]}
       <br></br>
       has {votes[selected]} votes
       <p></p>
       <button onClick={() => setVotes(voteForAnecdote(votes, selected))}>vote</button>
       <button onClick={() => setSelected(randomIndex(anecdotes.length))}>next anecdote</button>
+      <Header text="Anecdote with most votes"/>
+      {anecdotes[mostVotesIndex]}
+      <br></br>
+      has {votes[mostVotesIndex]} votes
     </div>
   )
 }
