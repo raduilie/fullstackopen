@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": "1"
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": "2"
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": "3"
@@ -24,11 +14,6 @@
       "id": "5",
       "name": "Popescu Vasile",
       "number": "789456123"
-    },
-    {
-      "id": "16e5",
-      "name": "Georgeta Ionescu",
-      "number": "123456789"
     },
     {
       "id": "d285",
@@ -49,6 +34,16 @@
       "id": "0041",
       "name": "New Namet",
       "number": "456781245"
+    },
+    {
+      "id": "a793",
+      "name": "Ada Lovelace",
+      "number": "74845128"
+    },
+    {
+      "id": "9321",
+      "name": "Andronache Omul",
+      "number": "78415784"
     }
   ]
 }
