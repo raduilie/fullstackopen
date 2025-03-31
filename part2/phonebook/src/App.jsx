@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
-  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notification, setNotification] = useState({message: null, color: 'green'})
 
   useEffect(() => {
     personsService.getAll()
@@ -31,7 +31,7 @@ const App = () => {
     setPersons(newPersons)
     setNewName('')
     setNewNumber('')
-    setTimeout(() => setNotificationMessage(null), 5000)
+    setTimeout(() => setNotification({message: null, color: 'green'}), 5000)
   }
 
   const addPerson = (event) => {
@@ -49,7 +49,14 @@ const App = () => {
             .update(newPerson)
             .then(returnedPerson => {
               const newPersons = persons.map(person => person.id == returnedPerson.id ? returnedPerson : person)
-              setNotificationMessage(`Modified ${returnedPerson.name}`)
+              setNotification({message: `Modified ${returnedPerson.name}`, color: 'green'})
+              updateStateAfter(newPersons)
+            })
+            .catch((error) => {
+              setNotification({
+                message: `Information of ${newName} has already been removed from server: ${error}`,
+                color: 'red'})
+              const newPersons = persons.filter(person => person.id !== newPerson.id)
               updateStateAfter(newPersons)
             })
           }
@@ -59,7 +66,7 @@ const App = () => {
           personsService
             .create(newPerson)
             .then(returnedPerson => {
-              setNotificationMessage(`Added ${returnedPerson.name}`)
+              setNotification({message: `Added ${returnedPerson.name}`, color: 'green'})
               updateStateAfter(persons.concat(returnedPerson))
             })
         }
@@ -88,7 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notification.message} color={notification.color} />
       <Filter onSubmit={filterPersons} onChange={handleNameFilterChange} value={nameFilter} />
       <h3>add a new</h3>
       <PersonForm
