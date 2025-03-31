@@ -1,19 +1,14 @@
 {
   "persons": [
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
     },
     {
-      "id": "5",
       "name": "Popescu Vasile",
-      "number": "789456123"
+      "number": "55-7845-44",
+      "id": "5"
     },
     {
       "id": "d285",
@@ -26,16 +21,6 @@
       "number": "41594156"
     },
     {
-      "id": "7c5a",
-      "name": "Popescu Vasilex",
-      "number": "4841059"
-    },
-    {
-      "id": "0041",
-      "name": "New Namet",
-      "number": "456781245"
-    },
-    {
       "id": "a793",
       "name": "Ada Lovelace",
       "number": "74845128"
@@ -44,6 +29,21 @@
       "id": "9321",
       "name": "Andronache Omul",
       "number": "78415784"
+    },
+    {
+      "id": "f227",
+      "name": "Mihalache Corvin",
+      "number": "011-401-59874"
+    },
+    {
+      "id": "1ca6",
+      "name": "Dan Abramov",
+      "number": "66-45784-1245"
+    },
+    {
+      "id": "39b9",
+      "name": "James Joe",
+      "number": "66-45784"
     }
   ]
 }

@@ -28,11 +28,24 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     personsService.get(newName)
-      .then((response) => {
-        if (response.data.length > 0) {
+      .then((data) => {        
+        if (data.length > 0) {
           console.log(`${newName} was found`)
-          alert(`${newName} is already added to phonebook`)
-        } else {
+          if (!window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+            return
+          }
+          const oldPerson = data[0]
+          const newPerson = {name: newName, number: newNumber, id: oldPerson.id}
+          personsService
+            .update(newPerson)
+            .then(returnedPerson => {
+              const newPersons = persons.map(person => person.id == returnedPerson.id ? returnedPerson : person)
+              setPersons(newPersons)
+              setNewName('')
+              setNewNumber('')
+            })
+          }
+        else {
           console.log(`${newName} was not found`)
           const newPerson = {name: newName, number: newNumber}
           personsService
@@ -42,7 +55,7 @@ const App = () => {
               setNewName('')
               setNewNumber('')
             })
-          }
+        }
       })
   }
 
@@ -54,6 +67,7 @@ const App = () => {
         console.log(`${person.name} was deleted`)
         personsService.getAll().then((persons) => setPersons(persons))
       })
+      .catch((error) => {alert(`Failed to delete ${person.name}: ${error}`)})
   }
 
   const filterPersons = (event) => {
