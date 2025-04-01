@@ -9,7 +9,7 @@ const Countries = ({countries, setSelectedCountry}) => {
 
     return (
         countries.length <= 10
-            ? countries.length >= 1
+            ? countries.length > 1
                 ? countries.map((country) => <div key={country}>{country} <button style={buttonStyle} onClick={() => onClick(country)}>Show</button></div>)
                 : null
             : <div>Too many matches, specify another filter</div>
