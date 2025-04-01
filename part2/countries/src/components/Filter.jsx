@@ -26,7 +26,7 @@ const Filter = ({allCountries, setSelectedCountry}) => {
     return (
         <>
             <div>find countries <input value={countriesFilter} onChange={onFilterChange}></input></div>
-            <Countries countries={countriesToShow} />
+            <Countries countries={countriesToShow} setSelectedCountry={setSelectedCountry} />
         </>
     )
 }
