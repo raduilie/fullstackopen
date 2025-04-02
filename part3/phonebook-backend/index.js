@@ -6,28 +6,58 @@ app.use(express.json())
 let persons = [
     { 
       "id": "1",
-      "name": "Arto Hellas", 
+      "name": "Arto Hellas",
       "number": "040-123456"
     },
     { 
       "id": "2",
-      "name": "Ada Lovelace", 
+      "name": "Ada Lovelace",
       "number": "39-44-5323523"
     },
     { 
       "id": "3",
-      "name": "Dan Abramov", 
+      "name": "Dan Abramov",
       "number": "12-43-234345"
     },
     { 
       "id": "4",
-      "name": "Mary Poppendieck", 
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122"
     }
 ]
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+})
+
+const generateId = () => {
+    return Math.floor(Math.random() * 1000000)
+}
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+
+    if (!body.name || !body.number) {
+        return response.status(400).json({
+            error: 'Please provide both name and number'
+        })
+    }
+
+    const existingPerson = persons.find(person => person.name === body.name)
+    if (existingPerson) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+    persons = persons.concat(person)
+
+    response.json(person)
 })
 
 app.get('/api/persons/:id', (request, response) => {
