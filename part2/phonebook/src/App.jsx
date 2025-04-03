@@ -36,49 +36,44 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    personsService.get(newName)
-      .then((data) => {        
-        if (data.length > 0) {
-          console.log(`${newName} was found`)
-          if (!window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-            return
-          }
-          const oldPerson = data[0]
-          const newPerson = {name: newName, number: newNumber, id: oldPerson.id}
-          personsService
-            .update(newPerson)
-            .then(returnedPerson => {
-              const newPersons = persons.map(person => person.id == returnedPerson.id ? returnedPerson : person)
-              setNotification({message: `Modified ${returnedPerson.name}`, color: 'green'})
-              updateStateAfter(newPersons)
-            })
-            .catch((error) => {
-              setNotification({
-                message: `Information of ${newName} has already been removed from server: ${error}`,
-                color: 'red'})
-              const newPersons = persons.filter(person => person.id !== newPerson.id)
-              updateStateAfter(newPersons)
-            })
-          }
-        else {
-          console.log(`${newName} was not found`)
-          const newPerson = {name: newName, number: newNumber}
-          personsService
-            .create(newPerson)
-            .then(returnedPerson => {
-              setNotification({message: `Added ${returnedPerson.name}`, color: 'green'})
-              updateStateAfter(persons.concat(returnedPerson))
-            })
-        }
-      })
+    const existingPerson = persons.find(person => person.name == newName)
+    if (existingPerson) {        
+      console.log(`${newName} was found`)
+      if (!window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        return
+      }
+      const newPerson = {name: newName, number: newNumber, id: existingPerson.id}
+      personsService
+        .update(newPerson)
+        .then(returnedPerson => {
+          const newPersons = persons.map(person => person.id == returnedPerson.id ? returnedPerson : person)
+          setNotification({message: `Modified ${returnedPerson.name}`, color: 'green'})
+          updateStateAfter(newPersons)
+        })
+        .catch((error) => {
+          setNotification({
+            message: `Information of ${newName} has already been removed from server: ${error}`,
+            color: 'red'})
+          const newPersons = persons.filter(person => person.id !== newPerson.id)
+          updateStateAfter(newPersons)
+        })
+    } else {
+      console.log(`${newName} was not found`)
+      const newPerson = {name: newName, number: newNumber}
+      personsService
+        .create(newPerson)
+        .then(returnedPerson => {
+          setNotification({message: `Added ${returnedPerson.name}`, color: 'green'})
+          updateStateAfter(persons.concat(returnedPerson))
+        })
+    }
   }
 
   const deletePerson = (person) => {
     if (!window.confirm(`Delete ${person.name} ?`))
       return
     personsService.deletePerson(person.id)
-      .then((person) => {
-        console.log(`${person.name} was deleted`)
+      .then(() => {
         personsService.getAll().then((persons) => setPersons(persons))
       })
       .catch((error) => {alert(`Failed to delete ${person.name}: ${error}`)})
