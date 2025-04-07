@@ -46,16 +46,17 @@ const App = () => {
       personsService
         .update(newPerson)
         .then(returnedPerson => {
-          const newPersons = persons.map(person => person.id == returnedPerson.id ? returnedPerson : person)
+          console.log(`returnedPerson: ${returnedPerson.name}, ${returnedPerson.number}`)
+          const newPersons = persons.map(person => person.id === returnedPerson.id ? returnedPerson : person)
           setNotification({message: `Modified ${returnedPerson.name}`, color: 'green'})
           updateStateAfter(newPersons)
         })
         .catch((error) => {
           setNotification({
-            message: `Information of ${newName} has already been removed from server: ${error}`,
+            message: `Failed to update ${newName}: ${error.response.data.error}`,
             color: 'red'})
-          const newPersons = persons.filter(person => person.id !== newPerson.id)
-          updateStateAfter(newPersons)
+          //const newPersons = persons.filter(person => person.id !== newPerson.id)
+          //updateStateAfter(newPersons)
         })
     } else {
       console.log(`${newName} was not found`)
@@ -65,6 +66,10 @@ const App = () => {
         .then(returnedPerson => {
           setNotification({message: `Added ${returnedPerson.name}`, color: 'green'})
           updateStateAfter(persons.concat(returnedPerson))
+        })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setNotification({message: error.response.data.error, color: 'red'})
         })
     }
   }
